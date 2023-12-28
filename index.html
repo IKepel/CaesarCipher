@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Шифр Цезаря</title>
+</head>
+<body>
+    <h1>Шифр Цезаря</h1>
+
+    <label for="inputText">Введіть текст:</label>
+    <input type="text" id="inputText"><br><br>
+
+    <label for="key">Введіть ключ:</label>
+    <input type="number" id="key"><br><br>
+
+    <button onclick="encrypt()">Зашифрувати</button>
+    <button onclick="decrypt()">Дешифрувати</button><br><br>
+
+    <label for="output">Результат:</label>
+    <textarea id="output" rows="4" cols="50"></textarea>
+
+    <script>
+        function caesarCipherEncrypt(str, key) {
+            key = parseInt(key); 
+            let result = '';
+
+            for (let i = 0; i < str.length; i++) {
+            let char = str[i];
+            if (char.match(/[a-z]/i)) {
+                let code = str.charCodeAt(i);
+                if (code >= 65 && code <= 90) {
+                    char = String.fromCharCode(((code - 65 + key) % 26) + 65);
+                } else if (code >= 97 && code <= 122) {
+                    char = String.fromCharCode(((code - 97 + key) % 26) + 97);
+                }
+            }
+            result += char;
+            }
+            return result;
+        }
+
+        function caesarCipherDecrypt(str, key) {
+            key = parseInt(key); 
+            let result = '';
+
+            for (let i = 0; i < str.length; i++) {
+                let char = str[i];
+                if (char.match(/[a-z]/i)) {
+                    let code = str.charCodeAt(i);
+                    if (code >= 65 && code <= 90) {
+                        char = String.fromCharCode(((code - 65 - key + 26) % 26) + 65);
+                    } else if (code >= 97 && code <= 122) {
+                        char = String.fromCharCode(((code - 97 - key + 26) % 26) + 97);
+                    }
+                }
+                result += char;
+            }
+            return result;
+        }
+
+        function encrypt() {
+            let text = document.getElementById("inputText").value;
+            let key = document.getElementById("key").value;
+            let encryptedText = caesarCipherEncrypt(text, key);
+            document.getElementById("output").value = encryptedText;
+        }
+
+        function decrypt() {
+            let text = document.getElementById("inputText").value;
+            let key = document.getElementById("key").value;
+            let decryptedText = caesarCipherDecrypt(text, key);
+            document.getElementById("output").value = decryptedText;
+        }
+    </script>
+</body>
+</html>
